@@ -180,6 +180,80 @@ module prepare (input logic [31:0] M0, M1, M2, M3,
 	assign M[14] = M14;
 	assign M[15] = M15;
 
+
+	logic [31:0] W [0:63];
+	assign W0 = M[0];
+	assign W1 = M[1];
+	assign W2 = M[2];
+	assign W3 = M[3];
+	assign W4 = M[4];
+	assign W5 = M[5];
+	assign W6 = M[6];
+	assign W7 = M[7];
+	assign W8 = M[8];
+	assign W9 = M[9];
+	assign W10 = M[10];
+	assign W11 = M[11];
+	assign W12 = M[12];
+	assign W13 = M[13];
+	assign W14 = M[14];
+	assign W15 = M[15];
+
+
+	always_comb begin
+		for(int t=16; i<64;t++)begin
+			assign W[t] = sigma1(W[t-2]) + W[t-7] + sigma0(W[t-15]) + W[t-16];
+		end
+	end
+
+	assign W16 = W[16];
+	assign W17 = W[17];
+   	assign W18 = W[18];
+   	assign W19 = W[19];
+	assign W20 = W[20];
+	assign W21 = W[21];
+	assign W22 = W[22];
+    assign W23 = W[23];
+    assign W24 = W[24];
+    assign W25 = W[25];
+    assign W26 = W[26];
+    assign W27 = W[27];
+    assign W28 = W[28];
+    assign W29 = W[29];
+    assign W30 = W[30];
+    assign W31 = W[31];
+    assign W32 = W[32];
+    assign W33 = W[33];
+    assign W34 = W[34];
+    assign W35 = W[35];
+    assign W36 = W[36];
+    assign W37 = W[37];
+    assign W38 = W[38];
+    assign W39 = W[39];
+    assign W40 = W[40];
+    assign W41 = W[41];
+    assign W42 = W[42];
+    assign W43 = W[43];
+    assign W44 = W[44];
+    assign W45 = W[45];
+    assign W46 = W[46];
+    assign W47 = W[47];
+    assign W48 = W[48];
+    assign W49 = W[49];
+    assign W50 = W[50];
+    assign W51 = W[51];
+    assign W52 = W[52];
+    assign W53 = W[53];
+    assign W54 = W[54];
+    assign W55 = W[55];
+    assign W56 = W[56];
+    assign W57 = W[57];
+    assign W58 = W[58];
+    assign W59 = W[59];
+    assign W60 = W[60];
+    assign W61 = W[61];
+    assign W62 = W[62];
+	assign W63 = W[63];
 	
 endmodule // prepare
 
