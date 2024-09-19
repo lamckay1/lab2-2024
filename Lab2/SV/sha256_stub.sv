@@ -163,80 +163,73 @@ prepare(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:1
    main_comp mc01 (a, b, c, d, e, f, g, h, K[32:0], W0, an, bn, cn, dn, en, fn, gn, hn); // add arguments within parenthesis
 	main_comp mc02 (an, bn, cn, dn, en, fn, gn, hn, K[63:32], W1, an2, bn2, cn2, dn2, en2, fn2, gn2, hn2); // add arguments within parenthesis
 	main_comp mc03 (an2, bn2, cn2, dn2, en2, fn2, gn2, hn2, K[95:64], W2, an3, bn3, cn3, dn3, en3, fn3, gn3, hn3  ); // add arguments within parenthesis
-   main_comp mc04 ( ); // add arguments within parenthesis
-   main_comp mc05 ( ); // add arguments within parenthesis
-   main_comp mc06 ( ); // add arguments within parenthesis
-   main_comp mc07 ( ); // add arguments within parenthesis
-   main_comp mc08 ( ); // add arguments within parenthesis
-   main_comp mc09 ( ); // add arguments within parenthesis
-   
-   main_comp mc10 ( ); // add arguments within parenthesis
-   main_comp mc11 ( ); // add arguments within parenthesis   
-   main_comp mc12 ( ); // add arguments within parenthesis   
-   main_comp mc13 ( ); // add arguments within parenthesis
-   main_comp mc14 ( ); // add arguments within parenthesis
-   main_comp mc15 ( ); // add arguments within parenthesis
-   main_comp mc16 ( ); // add arguments within parenthesis
-   main_comp mc17 ( ); // add arguments within parenthesis
-   main_comp mc18 ( ); // add arguments within parenthesis
-   main_comp mc19 ( ); // add arguments within parenthesis
+  main_comp mc04 (an3, bn3, cn3, dn3, en3, fn3, gn3, hn3, K[127:96], W3, an4, bn4, cn4, dn4, en4, fn4, gn4, hn4);
+main_comp mc05 (an4, bn4, cn4, dn4, en4, fn4, gn4, hn4, K[159:128], W4, an5, bn5, cn5, dn5, en5, fn5, gn5, hn5);
+main_comp mc06 (an5, bn5, cn5, dn5, en5, fn5, gn5, hn5, K[191:160], W5, an6, bn6, cn6, dn6, en6, fn6, gn6, hn6);
+main_comp mc07 (an6, bn6, cn6, dn6, en6, fn6, gn6, hn6, K[223:192], W6, an7, bn7, cn7, dn7, en7, fn7, gn7, hn7);
+main_comp mc08 (an7, bn7, cn7, dn7, en7, fn7, gn7, hn7, K[255:224], W7, an8, bn8, cn8, dn8, en8, fn8, gn8, hn8);
+main_comp mc09 (an8, bn8, cn8, dn8, en8, fn8, gn8, hn8, K[287:256], W8, an9, bn9, cn9, dn9, en9, fn9, gn9, hn9);
+main_comp mc10 (an9, bn9, cn9, dn9, en9, fn9, gn9, hn9, K[319:288], W9, an10, bn10, cn10, dn10, en10, fn10, gn10, hn10);
+main_comp mc11 (an10, bn10, cn10, dn10, en10, fn10, gn10, hn10, K[351:320], W10, an11, bn11, cn11, dn11, en11, fn11, gn11, hn11);
+main_comp mc12 (an11, bn11, cn11, dn11, en11, fn11, gn11, hn11, K[383:352], W11, an12, bn12, cn12, dn12, en12, fn12, gn12, hn12);
+main_comp mc13 (an12, bn12, cn12, dn12, en12, fn12, gn12, hn12, K[415:384], W12, an13, bn13, cn13, dn13, en13, fn13, gn13, hn13);
+main_comp mc14 (an13, bn13, cn13, dn13, en13, fn13, gn13, hn13, K[447:416], W13, an14, bn14, cn14, dn14, en14, fn14, gn14, hn14);
+main_comp mc15 (an14, bn14, cn14, dn14, en14, fn14, gn14, hn14, K[479:448], W14, an15, bn15, cn15, dn15, en15, fn15, gn15, hn15);
+main_comp mc16 (an15, bn15, cn15, dn15, en15, fn15, gn15, hn15, K[511:480], W15, an16, bn16, cn16, dn16, en16, fn16, gn16, hn16);
+main_comp mc17 (an16, bn16, cn16, dn16, en16, fn16, gn16, hn16, K[543:512], W16, an17, bn17, cn17, dn17, en17, fn17, gn17, hn17);
+main_comp mc18 (an17, bn17, cn17, dn17, en17, fn17, gn17, hn17, K[575:544], W17, an18, bn18, cn18, dn18, en18, fn18, gn18, hn18);
+main_comp mc19 (an18, bn18, cn18, dn18, en18, fn18, gn18, hn18, K[607:576], W18, an19, bn19, cn19, dn19, en19, fn19, gn19, hn19);
+main_comp mc20 (an19, bn19, cn19, dn19, en19, fn19, gn19, hn19, K[639:608], W19, an20, bn20, cn20, dn20, en20, fn20, gn20, hn20);
+main_comp mc21 (an20, bn20, cn20, dn20, en20, fn20, gn20, hn20, K[671:640], W20, an21, bn21, cn21, dn21, en21, fn21, gn21, hn21);
+main_comp mc22 (an21, bn21, cn21, dn21, en21, fn21, gn21, hn21, K[703:672], W21, an22, bn22, cn22, dn22, en22, fn22, gn22, hn22);
+main_comp mc23 (an22, bn22, cn22, dn22, en22, fn22, gn22, hn22, K[735:704], W22, an23, bn23, cn23, dn23, en23, fn23, gn23, hn23);
+main_comp mc24 (an23, bn23, cn23, dn23, en23, fn23, gn23, hn23, K[767:736], W23, an24, bn24, cn24, dn24, en24, fn24, gn24, hn24);
+main_comp mc25 (an24, bn24, cn24, dn24, en24, fn24, gn24, hn24, K[799:768], W24, an25, bn25, cn25, dn25, en25, fn25, gn25, hn25);
+main_comp mc26 (an25, bn25, cn25, dn25, en25, fn25, gn25, hn25, K[831:800], W25, an26, bn26, cn26, dn26, en26, fn26, gn26, hn26);
+main_comp mc27 (an26, bn26, cn26, dn26, en26, fn26, gn26, hn26, K[863:832], W26, an27, bn27, cn27, dn27, en27, fn27, gn27, hn27);
+main_comp mc28 (an27, bn27, cn27, dn27, en27, fn27, gn27, hn27, K[895:864], W27, an28, bn28, cn28, dn28, en28, fn28, gn28, hn28);
+main_comp mc29 (an28, bn28, cn28, dn28, en28, fn28, gn28, hn28, K[927:896], W28, an29, bn29, cn29, dn29, en29, fn29, gn29, hn29);
+main_comp mc30 (an29, bn29, cn29, dn29, en29, fn29, gn29, hn29, K[959:928], W29, an30, bn30, cn30, dn30, en30, fn30, gn30, hn30);
+main_comp mc31 (an30, bn30, cn30, dn30, en30, fn30, gn30, hn30, K[991:960], W30, an31, bn31, cn31, dn31, en31, fn31, gn31, hn31);
+main_comp mc32 (an31, bn31, cn31, dn31, en31, fn31, gn31, hn31, K[1023:992], W31, an32, bn32, cn32, dn32, en32, fn32, gn32, hn32);
+main_comp mc33 (an32, bn32, cn32, dn32, en32, fn32, gn32, hn32, K[1055:1024], W32, an33, bn33, cn33, dn33, en33, fn33, gn33, hn33);
+main_comp mc34 (an33, bn33, cn33, dn33, en33, fn33, gn33, hn33, K[1087:1056], W33, an34, bn34, cn34, dn34, en34, fn34, gn34, hn34);
+main_comp mc35 (an34, bn34, cn34, dn34, en34, fn34, gn34, hn34, K[1119:1088], W34, an35, bn35, cn35, dn35, en35, fn35, gn35, hn35);
+main_comp mc36 (an35, bn35, cn35, dn35, en35, fn35, gn35, hn35, K[1151:1120], W35, an36, bn36, cn36, dn36, en36, fn36, gn36, hn36);
+main_comp mc37 (an36, bn36, cn36, dn36, en36, fn36, gn36, hn36, K[1183:1152], W36, an37, bn37, cn37, dn37, en37, fn37, gn37, hn37);
+main_comp mc38 (an37, bn37, cn37, dn37, en37, fn37, gn37, hn37, K[1215:1184], W37, an38, bn38, cn38, dn38, en38, fn38, gn38, hn38);
+main_comp mc39 (an38, bn38, cn38, dn38, en38, fn38, gn38, hn38, K[1247:1216], W38, an39, bn39, cn39, dn39, en39, fn39, gn39, hn39);
+main_comp mc40 (an39, bn39, cn39, dn39, en39, fn39, gn39, hn39, K[1279:1248], W39, an40, bn40, cn40, dn40, en40, fn40, gn40, hn40);
+main_comp mc41 (an40, bn40, cn40, dn40, en40, fn40, gn40, hn40, K[1311:1280], W40, an41, bn41, cn41, dn41, en41, fn41, gn41, hn41);
+main_comp mc42 (an41, bn41, cn41, dn41, en41, fn41, gn41, hn41, K[1343:1312], W41, an42, bn42, cn42, dn42, en42, fn42, gn42, hn42);
+main_comp mc43 (an42, bn42, cn42, dn42, en42, fn42, gn42, hn42, K[1375:1344], W42, an43, bn43, cn43, dn43, en43, fn43, gn43, hn43);
+main_comp mc44 (an43, bn43, cn43, dn43, en43, fn43, gn43, hn43, K[1407:1376], W43, an44, bn44, cn44, dn44, en44, fn44, gn44, hn44);
+main_comp mc45 (an44, bn44, cn44, dn44, en44, fn44, gn44, hn44, K[1439:1408], W44, an45, bn45, cn45, dn45, en45, fn45, gn45, hn45);
+main_comp mc46 (an45, bn45, cn45, dn45, en45, fn45, gn45, hn45, K[1471:1440], W45, an46, bn46, cn46, dn46, en46, fn46, gn46, hn46);
+main_comp mc47 (an46, bn46, cn46, dn46, en46, fn46, gn46, hn46, K[1503:1472], W46, an47, bn47, cn47, dn47, en47, fn47, gn47, hn47);
+main_comp mc48 (an47, bn47, cn47, dn47, en47, fn47, gn47, hn47, K[1535:1504], W47, an48, bn48, cn48, dn48, en48, fn48, gn48, hn48);
+main_comp mc49 (an48, bn48, cn48, dn48, en48, fn48, gn48, hn48, K[1567:1536], W48, an49, bn49, cn49, dn49, en49, fn49, gn49, hn49);
+main_comp mc50 (an49, bn49, cn49, dn49, en49, fn49, gn49, hn49, K[1599:1568], W49, an50, bn50, cn50, dn50, en50, fn50, gn50, hn50);
+main_comp mc51 (an50, bn50, cn50, dn50, en50, fn50, gn50, hn50, K[1631:1600], W50, an51, bn51, cn51, dn51, en51, fn51, gn51, hn51);
+main_comp mc52 (an51, bn51, cn51, dn51, en51, fn51, gn51, hn51, K[1663:1632], W51, an52, bn52, cn52, dn52, en52, fn52, gn52, hn52);
+main_comp mc53 (an52, bn52, cn52, dn52, en52, fn52, gn52, hn52, K[1695:1664], W52, an53, bn53, cn53, dn53, en53, fn53, gn53, hn53);
+main_comp mc54 (an53, bn53, cn53, dn53, en53, fn53, gn53, hn53, K[1727:1696], W53, an54, bn54, cn54, dn54, en54, fn54, gn54, hn54);
+main_comp mc55 (an54, bn54, cn54, dn54, en54, fn54, gn54, hn54, K[1759:1728], W54, an55, bn55, cn55, dn55, en55, fn55, gn55, hn55);
+main_comp mc56 (an55, bn55, cn55, dn55, en55, fn55, gn55, hn55, K[1791:1760], W55, an56, bn56, cn56, dn56, en56, fn56, gn56, hn56);
+main_comp mc57 (an56, bn56, cn56, dn56, en56, fn56, gn56, hn56, K[1823:1792], W56, an57, bn57, cn57, dn57, en57, fn57, gn57, hn57);
+main_comp mc58 (an57, bn57, cn57, dn57, en57, fn57, gn57, hn57, K[1855:1824], W57, an58, bn58, cn58, dn58, en58, fn58, gn58, hn58);
+main_comp mc59 (an58, bn58, cn58, dn58, en58, fn58, gn58, hn58, K[1887:1856], W58, an59, bn59, cn59, dn59, en59, fn59, gn59, hn59);
+main_comp mc60 (an59, bn59, cn59, dn59, en59, fn59, gn59, hn59, K[1919:1888], W59, an60, bn60, cn60, dn60, en60, fn60, gn60, hn60);
+main_comp mc61 (an60, bn60, cn60, dn60, en60, fn60, gn60, hn60, K[1951:1920], W60, an61, bn61, cn61, dn61, en61, fn61, gn61, hn61);
+main_comp mc62 (an61, bn61, cn61, dn61, en61, fn61, gn61, hn61, K[1983:1952], W61, an62, bn62, cn62, dn62, en62, fn62, gn62, hn62);
+main_comp mc63 (an62, bn62, cn62, dn62, en62, fn62, gn62, hn62, K[2015:1984], W62, an63, bn63, cn63, dn63, en63, fn63, gn63, hn63);
+main_comp mc64 (an63, bn63, cn63, dn63, en63, fn63, gn63, hn63, K[2047:2016], W63, an64, bn64, cn64, dn64, en64, fn64, gn64, hn64);
 
-   main_comp mc20 ( ); // add arguments within parenthesis
-   main_comp mc21 ( ); // add arguments within parenthesis   
-   main_comp mc22 ( ); // add arguments within parenthesis   
-   main_comp mc23 ( ); // add arguments within parenthesis
-   main_comp mc24 ( ); // add arguments within parenthesis
-   main_comp mc25 ( ); // add arguments within parenthesis
-   main_comp mc26 ( ); // add arguments within parenthesis
-   main_comp mc27 ( ); // add arguments within parenthesis
-   main_comp mc28 ( ); // add arguments within parenthesis
-   main_comp mc29 ( ); // add arguments within parenthesis
-
-   main_comp mc30 ( ); // add arguments within parenthesis
-   main_comp mc31 ( ); // add arguments within parenthesis   
-   main_comp mc32 ( ); // add arguments within parenthesis   
-   main_comp mc33 ( ); // add arguments within parenthesis
-   main_comp mc34 ( ); // add arguments within parenthesis
-   main_comp mc35 ( ); // add arguments within parenthesis
-   main_comp mc36 ( ); // add arguments within parenthesis
-   main_comp mc37 ( ); // add arguments within parenthesis
-   main_comp mc38 ( ); // add arguments within parenthesis
-   main_comp mc39 ( ); // add arguments within parenthesis
-
-   main_comp mc40 ( ); // add arguments within parenthesis
-   main_comp mc41 ( ); // add arguments within parenthesis   
-   main_comp mc42 ( ); // add arguments within parenthesis   
-   main_comp mc43 ( ); // add arguments within parenthesis
-   main_comp mc44 ( ); // add arguments within parenthesis
-   main_comp mc45 ( ); // add arguments within parenthesis
-   main_comp mc46 ( ); // add arguments within parenthesis
-   main_comp mc47 ( ); // add arguments within parenthesis
-   main_comp mc48 ( ); // add arguments within parenthesis
-   main_comp mc49 ( ); // add arguments within parenthesis
-
-   main_comp mc50 ( ); // add arguments within parenthesis
-   main_comp mc51 ( ); // add arguments within parenthesis   
-   main_comp mc52 ( ); // add arguments within parenthesis   
-   main_comp mc53 ( ); // add arguments within parenthesis
-   main_comp mc54 ( ); // add arguments within parenthesis
-   main_comp mc55 ( ); // add arguments within parenthesis
-   main_comp mc56 ( ); // add arguments within parenthesis
-   main_comp mc57 ( ); // add arguments within parenthesis
-   main_comp mc58 ( ); // add arguments within parenthesis
-   main_comp mc59 ( ); // add arguments within parenthesis
-
-   main_comp mc60 ( ); // add arguments within parenthesis
-   main_comp mc61 ( ); // add arguments within parenthesis   
-   main_comp mc62 ( ); // add arguments within parenthesis   
-   main_comp mc63 ( ); // add arguments within parenthesis
-   main_comp mc64 ( ); // add arguments within parenthesis
-
-   intermediate_hash ih1 (a63_out, b63_out, c63_out, d63_out,
-			  e63_out, f63_out, g63_out, h63_out,
-			  a, b, c, d, e, f, g, h,
-			  h0, h1, h2, h3, h4, h5, h6, h7);
+	intermediate_hash ih1 (an64, bn64, cn64, d64,
+			  e64, f64, g64, h64,
+			   h0, h1, h2, h3, h4, h5, h6, h7);
    // Final output
-   assign hashed = {};
+	assign hashed = {h7, h6, h5, h4, h3, h2, h1, h0};
 
 endmodule // sha_main
 
