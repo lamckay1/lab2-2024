@@ -18,7 +18,7 @@ module sha_padder #(parameter MSG_SIZE = 24,
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
-	localparam zero_width = PADDED_SIZE - MSG_SIZE - 64
+	localparam zero_width = PADDED_SIZE - MSG_SIZE - 64;
 	
 	assign padded = {message, 1'b1, {zero_width{1'b0}}, MSG_SIZE};
 	//might be wrong
@@ -144,7 +144,7 @@ logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
 		W55, W56, W57, W58, W59,
 		W60, W61, W62, W63;
 	
-prepare(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:128],
+prepare prep(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:128],
 		padded[191:160], padded[223:192], padded[255:224], padded[287:256], padded[319:288], 
 	padded[351:320], padded[383:352], padded[415:384], padded[447:416], padded[479:448], padded[511:480], W0, W1, W2, W3, W4, 
 	W5, W6, W7, W8, W9,
@@ -293,7 +293,10 @@ module prepare (input logic [31:0] M0, M1, M2, M3,
 
 	always_comb begin
 		for(int t=16; t<64;t++)begin
-			assign W[t] = sigma1(W[t-2]) + W[t-7] + sigma0(W[t-15]) + W[t-16];
+		sigma1 s(W[t-2], y);
+		sigma0(W[t-15], y2);
+
+			W[t] = y + W[t-7] + y2 + W[t-16];
 		end
 	end
 
@@ -354,9 +357,17 @@ module main_comp (input logic [31:0] a_in, b_in, c_in, d_in, e_in, f_in, g_in, h
 		  output logic [31:0] a_out, b_out, c_out, d_out, e_out, f_out, g_out,
 		  output logic [31:0] h_out);
 
+
 	logic[31:0] T1, T2;
-	assign T1 = h_in + Sigma1(e_in) + choice(e_in, f_in, g_in) + K_in + W_in;
-	assign T2 = Sigma0(a_in) + majority(a_in, b_in, c_in);
+
+	logic [31:0] s1, s0, cho, maj;
+	Sigma1 S1(e_in, s1);
+	choice cho(e_in, f_in, g_in, cho);
+	Sigma0 S0(a_in, s0);
+	majority Maj(a_in, b_in, c_in, maj);
+
+	assign T1 = h_in + s1 + cho + K_in + W_in;
+	assign T2 = s0 + maj);
 
 	assign a_out = T1 + T2;
 	assign b_out = a_in;
