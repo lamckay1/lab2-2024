@@ -263,6 +263,18 @@ module main_comp (input logic [31:0] a_in, b_in, c_in, d_in, e_in, f_in, g_in, h
 		  output logic [31:0] a_out, b_out, c_out, d_out, e_out, f_out, g_out,
 		  output logic [31:0] h_out);
 
+	logic[31:0] T1, T2;
+	assign T1 = h_in + Sigma1(e_in) + choice(e_in, f_in, g_in) + K_in + W_in;
+	assign T2 = Sigma0(a_in) + majority(a_in, b_in, c_in);
+
+	assign a_out = T1 + T2;
+	assign b_out = a_in;
+	assign c_out = b_in;
+	assign d_out = c_in;
+	assign e_out = d_in + T1;
+	assign f_out = e_in;
+	assign g_out = f_in;
+	assign h_out = g_in;
 
 endmodule // main_comp
 
