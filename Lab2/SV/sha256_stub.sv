@@ -18,7 +18,9 @@ module sha_padder #(parameter MSG_SIZE = 24,
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
-	assign padded = {message, 1'b1, {zero_width{1'b0}}, {back_0_width{1'b0}}, MSG_SIZE};
+	localparam zero_width = PADDED_SIZE - MSG_SIZE - 64
+	
+	assign padded = {message, 1'b1, {zero_width{1'b0}}, MSG_SIZE};
 	//might be wrong
 
 endmodule // sha_padder
@@ -113,20 +115,20 @@ logic [31:0]   an59, bn59, cn59, dn59, en59, fn59, gn59, hn59;
 logic [31:0]   an60, bn60, cn60, dn60, en60, fn60, gn60, hn60;
 logic [31:0]   an61, bn61, cn61, dn61, en61, fn61, gn61, hn61;
 logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
-
-   logic [31:0]   a63_out, b63_out, c63_out, d63_out, e63_out, f63_out, g63_out, h63_out;
+	logic [31:0]   an63, bn63, cn63, dn63, en63, fn63, gn63, hn63;
+	
    logic [31:0]   h0, h1, h2, h3, h4, h5, h6, h7;
 
    // Initialize a through h
    initial begin
-	   a = h0[0];
-	   b = h0[1];
-	   c = h0[2];
-	   d = h0[3];
-	   e = h0[4];
-	   f = h0[5];
-	   g = h0[6];
-	   h = h0[7];
+	   a = h0;
+	   b = h1;
+	   c = h2;
+	   d = h3;
+	   e = h4;
+	   f = h5;
+	   g = h6;
+	   h = h7;
    end
 	logic [31:0]W0, W1, W2, W3, W4, 
 		W5, W6, W7, W8, W9,
@@ -160,7 +162,7 @@ prepare(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:1
 	
    // 64 hash computations   
 	
-   main_comp mc01 (a, b, c, d, e, f, g, h, K[32:0], W0, an, bn, cn, dn, en, fn, gn, hn); // add arguments within parenthesis
+	main_comp mc01 (a, b, c, d, e, f, g, h, K[31:0], W0, an, bn, cn, dn, en, fn, gn, hn); // add arguments within parenthesis
 	main_comp mc02 (an, bn, cn, dn, en, fn, gn, hn, K[63:32], W1, an2, bn2, cn2, dn2, en2, fn2, gn2, hn2); // add arguments within parenthesis
 	main_comp mc03 (an2, bn2, cn2, dn2, en2, fn2, gn2, hn2, K[95:64], W2, an3, bn3, cn3, dn3, en3, fn3, gn3, hn3  ); // add arguments within parenthesis
   main_comp mc04 (an3, bn3, cn3, dn3, en3, fn3, gn3, hn3, K[127:96], W3, an4, bn4, cn4, dn4, en4, fn4, gn4, hn4);
@@ -290,7 +292,7 @@ module prepare (input logic [31:0] M0, M1, M2, M3,
 
 
 	always_comb begin
-		for(int t=16; i<64;t++)begin
+		for(int t=16; t<64;t++)begin
 			assign W[t] = sigma1(W[t-2]) + W[t-7] + sigma0(W[t-15]) + W[t-16];
 		end
 	end
