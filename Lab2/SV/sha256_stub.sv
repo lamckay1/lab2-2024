@@ -51,6 +51,8 @@ module sha256 #(parameter PADDED_SIZE = 512)
 
    // Definie your intermediate variables here (forgetting them assumes variables are 1-bit)
    logic [31:0]   a, b, c, d, e, f, g, h;
+	logic [31:0]   an, bn, cn, dn, en, fn, gn, hn;
+	logic [31:0]   a2n, bn2, cn2, dn2, en2, fn2, gn2, hn2;
    logic [31:0]   a63_out, b63_out, c63_out, d63_out, e63_out, f63_out, g63_out, h63_out;
    logic [31:0]   h0, h1, h2, h3, h4, h5, h6, h7;
 
@@ -65,11 +67,24 @@ module sha256 #(parameter PADDED_SIZE = 512)
 	   g = h0[6];
 	   h = h0[7];
    end
+	logic [31:0]W0, W1, W2, W3, W4, 
+		W5, W6, W7, W8, W9,
+		W10, W11, W12, W13, W14, 
+		W15, W16, W17, W18, W19,
+		W20, W21, W22, W23, W24, 
+		W25, W26, W27, W28, W29,
+		W30, W31, W32, W33, W34, 
+		W35, W36, W37, W38, W39,
+		W40, W41, W42, W43, W44, 
+		W45, W46, W47, W48, W49,
+		W50, W51, W52, W53, W54, 
+		W55, W56, W57, W58, W59,
+		W60, W61, W62, W63;
 	
 prepare(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:128],
 		padded[191:160], padded[223:192], padded[255:224], padded[287:256], padded[319:288], 
 	padded[351:320], padded[383:352], padded[415:384], padded[447:416], padded[479:448], padded[511:480], W0, W1, W2, W3, W4, 
-		W5, W6, W7, W8, W9,
+	W5, W6, W7, W8, W9,
 		W10, W11, W12, W13, W14, 
 		W15, W16, W17, W18, W19,
 		W20, W21, W22, W23, W24, 
@@ -83,7 +98,8 @@ prepare(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:1
 		W60, W61, W62, W63);
 	
    // 64 hash computations   
-   main_comp mc01 ( ); // add arguments within parenthesis
+	
+   main_comp mc01 (a, b, c, d, e, f, g, h, K[32:0], W0, an, bn, cn, dn, en, fn, gn, hn); // add arguments within parenthesis
    main_comp mc02 ( ); // add arguments within parenthesis
    main_comp mc03 ( ); // add arguments within parenthesis
    main_comp mc04 ( ); // add arguments within parenthesis
