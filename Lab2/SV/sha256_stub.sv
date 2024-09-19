@@ -52,7 +52,17 @@ module sha256 #(parameter PADDED_SIZE = 512)
    logic [31:0]   h0, h1, h2, h3, h4, h5, h6, h7;
 
    // Initialize a through h
-   
+   initial begin
+	   a = h0[0];
+	   b = h0[1];
+	   c = h0[2];
+	   d = h0[3];
+	   e = h0[4];
+	   f = h0[5];
+	   g = h0[6];
+	   h = h0[7];
+   end
+
    // 64 hash computations   
    main_comp mc01 ( ); // add arguments within parenthesis
    main_comp mc02 ( ); // add arguments within parenthesis
