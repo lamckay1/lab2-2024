@@ -8,7 +8,7 @@ module top #(parameter MSG_SIZE = 24,
     output logic [255:0] hashed);
 
    logic [PADDED_SIZE-1:0] padded;
-   
+	sha_padder pad(message, padded);
    
 endmodule // sha_256
 
@@ -16,7 +16,8 @@ module sha_padder #(parameter MSG_SIZE = 24,
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
-
+	assign padded = {message, 1'b1, {zero_width{1'b0}}, {back_0_width{1'b0}}, MSG_SIZE};
+	//might be wrong
 
 endmodule // sha_padder
 
