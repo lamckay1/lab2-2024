@@ -290,13 +290,10 @@ module prepare (input logic [31:0] M0, M1, M2, M3,
 	assign W14 = M[14];
 	assign W15 = M[15];
 
-
+	
 	always_comb begin
 		for(int t=16; t<64;t++)begin
-		sigma1 s(W[t-2], y);
-		sigma0(W[t-15], y2);
-
-			W[t] = y + W[t-7] + y2 + W[t-16];
+			W[t] = sigma1(W[t-2]) + W[t-7] + sigma0(W[t-15]) + W[t-16];
 		end
 	end
 
@@ -367,7 +364,7 @@ module main_comp (input logic [31:0] a_in, b_in, c_in, d_in, e_in, f_in, g_in, h
 	majority Maj(a_in, b_in, c_in, maj);
 
 	assign T1 = h_in + s1 + cho + K_in + W_in;
-	assign T2 = s0 + maj);
+	assign T2 = s0 + maj;
 
 	assign a_out = T1 + T2;
 	assign b_out = a_in;
@@ -410,20 +407,20 @@ module Sigma0 (input logic [31:0] x, output logic [31:0] Sig0);
 
 endmodule // Sigma0
 
-module sigma0 (input logic [31:0] x, output logic [31:0] sig0);
-	assign sig0 = ({x[6:0],x[31:7]}) ^ ({x[17:0], x[31:18]}) ^ (x>>3);
+function sigma0 (input logic [31:0] x);
+	assign sigma0 = ({x[6:0],x[31:7]}) ^ ({x[17:0], x[31:18]}) ^ (x>>3);
 
-endmodule // sigma0
+endfunction // sigma0
 
 module Sigma1 (input logic [31:0] x, output logic [31:0] Sig1);
 	assign Sig1 = ({x[5:0],x[31:6]}) ^ ({x[10:0], x[31:11]}) ^ ({x[19:0], x[31:20]});
 
 endmodule // Sigma1
 
-module sigma1 (input logic [31:0] x, output logic [31:0] sig1);
-	assign sig1 = ({x[16:0],x[31:17]}) ^ ({x[18:0], x[31:19]}) ^ (x>>10);
+function sigma1 (input logic [31:0] x);
+	assign sigma1 = ({x[16:0],x[31:17]}) ^ ({x[18:0], x[31:19]}) ^ (x>>10);
 
-endmodule // sigma1
+endfunction // sigma1
 
      
    
