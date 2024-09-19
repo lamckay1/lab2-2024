@@ -100,8 +100,8 @@ prepare(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:1
    // 64 hash computations   
 	
    main_comp mc01 (a, b, c, d, e, f, g, h, K[32:0], W0, an, bn, cn, dn, en, fn, gn, hn); // add arguments within parenthesis
-   main_comp mc02 ( ); // add arguments within parenthesis
-   main_comp mc03 ( ); // add arguments within parenthesis
+	main_comp mc02 (an, bn, cn, dn, en, fn, gn, hn, K[63:32], W1, an2, bn2, cn2, dn2, en2, fn2, gn2, hn2); // add arguments within parenthesis
+	main_comp mc03 (an2, bn2, cn2, dn2, en2, fn2, gn2, hn2, K[95:64], W2, an3, bn3, cn3, dn3, en3, fn3, gn3, hn3  ); // add arguments within parenthesis
    main_comp mc04 ( ); // add arguments within parenthesis
    main_comp mc05 ( ); // add arguments within parenthesis
    main_comp mc06 ( ); // add arguments within parenthesis
