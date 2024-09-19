@@ -113,8 +113,7 @@ logic [31:0]   an59, bn59, cn59, dn59, en59, fn59, gn59, hn59;
 logic [31:0]   an60, bn60, cn60, dn60, en60, fn60, gn60, hn60;
 logic [31:0]   an61, bn61, cn61, dn61, en61, fn61, gn61, hn61;
 logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
-logic [31:0]   an63, bn63, cn63, dn63, en63, fn63, gn63, hn63;
-logic [31:0]   an64, bn64, cn64, dn64, en64, fn64, gn64, hn64;
+
    logic [31:0]   a63_out, b63_out, c63_out, d63_out, e63_out, f63_out, g63_out, h63_out;
    logic [31:0]   h0, h1, h2, h3, h4, h5, h6, h7;
 
