@@ -292,7 +292,7 @@ module choice (input logic [31:0] x, y, z, output logic [31:0] ch);
 endmodule // choice
 
 module Sigma0 (input logic [31:0] x, output logic [31:0] Sig0);
-	assign Sig0 = ({x[1:0].x[31:2]}) ^ ({x[12:0], x[31:13]}) ^ ({x[21:0], x[31:22]});
+	assign Sig0 = ({x[1:0],x[31:2]}) ^ ({x[12:0], x[31:13]}) ^ ({x[21:0], x[31:22]});
 
 endmodule // Sigma0
 
@@ -302,7 +302,7 @@ module sigma0 (input logic [31:0] x, output logic [31:0] sig0);
 endmodule // sigma0
 
 module Sigma1 (input logic [31:0] x, output logic [31:0] Sig1);
-	assign Sig1 = ({x[5:0].x[31:6]}) ^ ({x[10:0], x[31:11]}) ^ ({x[19:0], x[31:20]});
+	assign Sig1 = ({x[5:0],x[31:6]}) ^ ({x[10:0], x[31:11]}) ^ ({x[19:0], x[31:20]});
 
 endmodule // Sigma1
 
