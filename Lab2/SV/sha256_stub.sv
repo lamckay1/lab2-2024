@@ -162,6 +162,25 @@ module prepare (input logic [31:0] M0, M1, M2, M3,
 		output logic [31:0] W55, W56, W57, W58, W59,
 		output logic [31:0] W60, W61, W62, W63);
 
+	logic [31:0] M [15:0];
+	assign M[0] = M0;
+	assign M[1] = M1;
+	assign M[2] = M2;
+	assign M[3] = M3;
+	assign M[4] = M4;
+	assign M[5] = M5;
+	assign M[6] = M6;
+	assign M[7] = M7;
+	assign M[8] = M8;
+	assign M[9] = M9;
+	assign M[10] = M10;
+	assign M[11] = M11;
+	assign M[12] = M12;
+	assign M[13] = M13;
+	assign M[14] = M14;
+	assign M[15] = M15;
+
+	
 endmodule // prepare
 
 
