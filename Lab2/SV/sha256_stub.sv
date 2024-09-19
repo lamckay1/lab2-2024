@@ -179,12 +179,12 @@ module intermediate_hash (input logic [31:0] a_in, b_in, c_in, d_in, e_in, f_in,
 endmodule
 			  
 module majority (input logic [31:0] x, y, z, output logic [31:0] maj);
-
+	assign maj = (x & y) ^ (x & z) ^ (y & z);
 
 endmodule // majority
 
 module choice (input logic [31:0] x, y, z, output logic [31:0] ch);
-
+	assign ch = (x & y) ^ (~x & z);
 
 endmodule // choice
 
