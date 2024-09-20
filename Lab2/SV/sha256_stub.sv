@@ -2,7 +2,7 @@
 // Secure Hash Standard (SHA-256)
 //
 
-module top #(parameter MSG_SIZE = 24,
+module top #(parameter MSG_SIZE=96,
 	     parameter PADDED_SIZE = 512)
    (input logic [MSG_SIZE-1:0] message,
     output logic [255:0] hashed);
@@ -14,7 +14,7 @@ module top #(parameter MSG_SIZE = 24,
 		
 endmodule // sha_256
 
-module sha_padder #(parameter MSG_SIZE = 24,	     
+module sha_padder #(parameter MSG_SIZE=96,	     
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
@@ -116,19 +116,21 @@ logic [31:0]   an60, bn60, cn60, dn60, en60, fn60, gn60, hn60;
 logic [31:0]   an61, bn61, cn61, dn61, en61, fn61, gn61, hn61;
 logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
 	logic [31:0]   an63, bn63, cn63, dn63, en63, fn63, gn63, hn63;
+	logic [31:0]   an64, bn64, cn64, dn64, en64, fn64, gn64, hn64;
 	
    logic [31:0]   h0, h1, h2, h3, h4, h5, h6, h7;
+   logic [31:0]   h0o, h1o, h2o, h3o, h4o, h5o, h6o, h7o;
 
    // Initialize a through h
    initial begin
-	   a = h0;
-	   b = h1;
-	   c = h2;
-	   d = h3;
-	   e = h4;
-	   f = h5;
-	   g = h6;
-	   h = h7;
+	   a = H[0];
+	   b = H[1];
+	   c = H[2];
+	   d = H[3];
+	   e = H[4];
+	   f = H[5];
+	   g = H[6];
+	   h = H[7];
    end
 	logic [31:0]W0, W1, W2, W3, W4, 
 		W5, W6, W7, W8, W9,
@@ -227,11 +229,14 @@ main_comp mc62 (an61, bn61, cn61, dn61, en61, fn61, gn61, hn61, K[1983:1952], W6
 main_comp mc63 (an62, bn62, cn62, dn62, en62, fn62, gn62, hn62, K[2015:1984], W62, an63, bn63, cn63, dn63, en63, fn63, gn63, hn63);
 main_comp mc64 (an63, bn63, cn63, dn63, en63, fn63, gn63, hn63, K[2047:2016], W63, an64, bn64, cn64, dn64, en64, fn64, gn64, hn64);
 
-	intermediate_hash ih1 (an64, bn64, cn64, d64,
-			  e64, f64, g64, h64,
-			   h0, h1, h2, h3, h4, h5, h6, h7);
+
+
+
+	intermediate_hash ih1 (an64, bn64, cn64, dn64, en64, fn64, gn64, hn64,
+			   			   h0, h1, h2, h3, h4, h5, h6, h7, 
+			   			   h0o, h1o, h2o, h3o, h4o, h5o, h6o, h7o);
    // Final output
-	assign hashed = {h7, h6, h5, h4, h3, h2, h1, h0};
+	assign hashed = {h0, h1, h2, h3, h4, h5, h6, h7};
 
 endmodule // sha_main
 
@@ -359,7 +364,7 @@ module main_comp (input logic [31:0] a_in, b_in, c_in, d_in, e_in, f_in, g_in, h
 
 	logic [31:0] s1, s0, cho, maj;
 	Sigma1 S1(e_in, s1);
-	choice cho(e_in, f_in, g_in, cho);
+	choice cho1(e_in, f_in, g_in, cho);
 	Sigma0 S0(a_in, s0);
 	majority Maj(a_in, b_in, c_in, maj);
 
