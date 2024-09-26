@@ -2,19 +2,19 @@
 // Secure Hash Standard (SHA-256)
 //
 
-module top #(parameter MSG_SIZE=96,
+module top #(parameter MSG_SIZE=120,
 	     parameter PADDED_SIZE = 512)
    (input logic [MSG_SIZE-1:0] message,
     output logic [255:0] hashed);
 
    logic [PADDED_SIZE-1:0] padded;
-	sha_padder pad(message, padded);
+	sha_padder #(MSG_SIZE,PADDED_SIZE) padder(message, padded);
 
-	sha256 sha(padded, hashed);
+	sha256 #(PADDED_SIZE) main(padded, hashed);
 		
 endmodule // sha_256
 
-module sha_padder #(parameter MSG_SIZE=96,	     
+module sha_padder #(parameter MSG_SIZE=120,	     
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
@@ -122,16 +122,15 @@ logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
    logic [31:0]   h0o, h1o, h2o, h3o, h4o, h5o, h6o, h7o;
 
    // Initialize a through h
-   initial begin
-	   a = H[0];
-	   b = H[1];
-	   c = H[2];
-	   d = H[3];
-	   e = H[4];
-	   f = H[5];
-	   g = H[6];
-	   h = H[7];
-   end
+  assign a = H[255:224];
+   assign b = H[223:192];
+   assign c = H[191:160];
+   assign d = H[159:128];
+   assign e = H[127:96];
+   assign f = H[95:64];
+   assign g = H[63:32];
+   assign h = H[31:0];
+
 	logic [31:0]W0, W1, W2, W3, W4, 
 		W5, W6, W7, W8, W9,
 		W10, W11, W12, W13, W14, 
@@ -146,7 +145,7 @@ logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
 		W55, W56, W57, W58, W59,
 		W60, W61, W62, W63;
 	
-prepare prep(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:128],
+prepare p1(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:128],
 		padded[191:160], padded[223:192], padded[255:224], padded[287:256], padded[319:288], 
 	padded[351:320], padded[383:352], padded[415:384], padded[447:416], padded[479:448], padded[511:480], W0, W1, W2, W3, W4, 
 	W5, W6, W7, W8, W9,
@@ -233,10 +232,10 @@ main_comp mc64 (an63, bn63, cn63, dn63, en63, fn63, gn63, hn63, K[2047:2016], W6
 
 
 	intermediate_hash ih1 (an64, bn64, cn64, dn64, en64, fn64, gn64, hn64,
-			   			   h0, h1, h2, h3, h4, h5, h6, h7, 
+			   			   a, b, c, d, e, f, g, h, 
 			   			   h0o, h1o, h2o, h3o, h4o, h5o, h6o, h7o);
    // Final output
-	assign hashed = {h0, h1, h2, h3, h4, h5, h6, h7};
+	assign hashed = {h0o, h1o, h2o, h3o, h4o, h5o, h6o, h7o};
 
 endmodule // sha_main
 
@@ -258,98 +257,279 @@ module prepare (input logic [31:0] M0, M1, M2, M3,
 		output logic [31:0] W55, W56, W57, W58, W59,
 		output logic [31:0] W60, W61, W62, W63);
 
-	logic [31:0] M [15:0];
-	assign M[0] = M0;
-	assign M[1] = M1;
-	assign M[2] = M2;
-	assign M[3] = M3;
-	assign M[4] = M4;
-	assign M[5] = M5;
-	assign M[6] = M6;
-	assign M[7] = M7;
-	assign M[8] = M8;
-	assign M[9] = M9;
-	assign M[10] = M10;
-	assign M[11] = M11;
-	assign M[12] = M12;
-	assign M[13] = M13;
-	assign M[14] = M14;
-	assign M[15] = M15;
+	logic [31:0] W14_sigma1_out,
+W15_sigma1_out,
+W16_sigma1_out,
+W17_sigma1_out,
+W18_sigma1_out,
+W19_sigma1_out,
+W20_sigma1_out,
+W21_sigma1_out,
+W22_sigma1_out,
+W23_sigma1_out,
+W24_sigma1_out,
+W25_sigma1_out,
+W26_sigma1_out,
+W27_sigma1_out,
+W28_sigma1_out,
+W29_sigma1_out,
+W30_sigma1_out,
+W31_sigma1_out,
+W32_sigma1_out,
+W33_sigma1_out,
+W34_sigma1_out,
+W35_sigma1_out,
+W36_sigma1_out,
+W37_sigma1_out,
+W38_sigma1_out,
+W39_sigma1_out,
+W40_sigma1_out,
+W41_sigma1_out,
+W42_sigma1_out,
+W43_sigma1_out,
+W44_sigma1_out,
+W45_sigma1_out,
+W46_sigma1_out,
+W47_sigma1_out,
+W48_sigma1_out,
+W49_sigma1_out,
+W50_sigma1_out,
+W51_sigma1_out,
+W52_sigma1_out,
+W53_sigma1_out,
+W54_sigma1_out,
+W55_sigma1_out,
+W56_sigma1_out,
+W57_sigma1_out,
+W58_sigma1_out,
+W59_sigma1_out,
+W60_sigma1_out,
+W61_sigma1_out,
+W1_sigma0_out,
+W2_sigma0_out,
+W3_sigma0_out,
+W4_sigma0_out,
+W5_sigma0_out,
+W6_sigma0_out,
+W7_sigma0_out,
+W8_sigma0_out,
+W9_sigma0_out,
+W10_sigma0_out,
+W11_sigma0_out,
+W12_sigma0_out,
+W13_sigma0_out,
+W14_sigma0_out,
+W15_sigma0_out,
+W16_sigma0_out,
+W17_sigma0_out,
+W18_sigma0_out,
+W19_sigma0_out,
+W20_sigma0_out,
+W21_sigma0_out,
+W22_sigma0_out,
+W23_sigma0_out,
+W24_sigma0_out,
+W25_sigma0_out,
+W26_sigma0_out,
+W27_sigma0_out,
+W28_sigma0_out,
+W29_sigma0_out,
+W30_sigma0_out,
+W31_sigma0_out,
+W32_sigma0_out,
+W33_sigma0_out,
+W34_sigma0_out,
+W35_sigma0_out,
+W36_sigma0_out,
+W37_sigma0_out,
+W38_sigma0_out,
+W39_sigma0_out,
+W40_sigma0_out,
+W41_sigma0_out,
+W42_sigma0_out,
+W43_sigma0_out,
+W44_sigma0_out,
+W45_sigma0_out,
+W46_sigma0_out,
+W47_sigma0_out,
+W48_sigma0_out;
 
-
-	logic [31:0] W [0:63];
-	assign W0 = M[0];
-	assign W1 = M[1];
-	assign W2 = M[2];
-	assign W3 = M[3];
-	assign W4 = M[4];
-	assign W5 = M[5];
-	assign W6 = M[6];
-	assign W7 = M[7];
-	assign W8 = M[8];
-	assign W9 = M[9];
-	assign W10 = M[10];
-	assign W11 = M[11];
-	assign W12 = M[12];
-	assign W13 = M[13];
-	assign W14 = M[14];
-	assign W15 = M[15];
 
 	
-	always_comb begin
-		for(int t=16; t<64;t++)begin
-			W[t] = sigma1(W[t-2]) + W[t-7] + sigma0(W[t-15]) + W[t-16];
-		end
-	end
+	assign W0 = M0;
+	assign W1 = M1;
+	assign W2 = M2;
+	assign W3 = M3;
+	assign W4 = M4;
+	assign W5 = M5;
+	assign W6 = M6;
+	assign W7 = M7;
+	assign W8 = M8;
+	assign W9 = M9;
+	assign W10 = M10;
+	assign W11 = M11;
+	assign W12 = M12;
+	assign W13 = M13;
+	assign W14 = M14;
+	assign W15 = M15;
 
-	assign W16 = W[16];
-	assign W17 = W[17];
-   	assign W18 = W[18];
-   	assign W19 = W[19];
-	assign W20 = W[20];
-	assign W21 = W[21];
-	assign W22 = W[22];
-    assign W23 = W[23];
-    assign W24 = W[24];
-    assign W25 = W[25];
-    assign W26 = W[26];
-    assign W27 = W[27];
-    assign W28 = W[28];
-    assign W29 = W[29];
-    assign W30 = W[30];
-    assign W31 = W[31];
-    assign W32 = W[32];
-    assign W33 = W[33];
-    assign W34 = W[34];
-    assign W35 = W[35];
-    assign W36 = W[36];
-    assign W37 = W[37];
-    assign W38 = W[38];
-    assign W39 = W[39];
-    assign W40 = W[40];
-    assign W41 = W[41];
-    assign W42 = W[42];
-    assign W43 = W[43];
-    assign W44 = W[44];
-    assign W45 = W[45];
-    assign W46 = W[46];
-    assign W47 = W[47];
-    assign W48 = W[48];
-    assign W49 = W[49];
-    assign W50 = W[50];
-    assign W51 = W[51];
-    assign W52 = W[52];
-    assign W53 = W[53];
-    assign W54 = W[54];
-    assign W55 = W[55];
-    assign W56 = W[56];
-    assign W57 = W[57];
-    assign W58 = W[58];
-    assign W59 = W[59];
-    assign W60 = W[60];
-    assign W61 = W[61];
-    assign W62 = W[62];
-	assign W63 = W[63];
+	
+	
+// sigma 1 (see bottom of page 6)
+	sigma1 sig1_1 (W14, W14_sigma1_out);
+	sigma1 sig1_2 (W15, W15_sigma1_out);
+	sigma1 sig1_3 (W16, W16_sigma1_out);
+	sigma1 sig1_4 (W17, W17_sigma1_out);
+	sigma1 sig1_5 (W18, W18_sigma1_out);
+	sigma1 sig1_6 (W19, W19_sigma1_out);
+	sigma1 sig1_7 (W20, W20_sigma1_out);
+	sigma1 sig1_8 (W21, W21_sigma1_out);
+	sigma1 sig1_9 (W22, W22_sigma1_out);
+	sigma1 sig1_10 (W23, W23_sigma1_out);
+	sigma1 sig1_11 (W24, W24_sigma1_out);
+	sigma1 sig1_12 (W25, W25_sigma1_out);
+	sigma1 sig1_13 (W26, W26_sigma1_out);
+	sigma1 sig1_14 (W27, W27_sigma1_out);
+	sigma1 sig1_15 (W28, W28_sigma1_out);
+	sigma1 sig1_16 (W29, W29_sigma1_out);
+	sigma1 sig1_17 (W30, W30_sigma1_out);
+	sigma1 sig1_18 (W31, W31_sigma1_out);
+	sigma1 sig1_19 (W32, W32_sigma1_out);
+	sigma1 sig1_20 (W33, W33_sigma1_out);
+	sigma1 sig1_21 (W34, W34_sigma1_out);
+	sigma1 sig1_22 (W35, W35_sigma1_out);
+	sigma1 sig1_23 (W36, W36_sigma1_out);
+	sigma1 sig1_24 (W37, W37_sigma1_out);
+	sigma1 sig1_25 (W38, W38_sigma1_out);
+	sigma1 sig1_26 (W39, W39_sigma1_out);
+	sigma1 sig1_27 (W40, W40_sigma1_out);
+	sigma1 sig1_28 (W41, W41_sigma1_out);
+	sigma1 sig1_29 (W42, W42_sigma1_out);
+	sigma1 sig1_30 (W43, W43_sigma1_out);
+	sigma1 sig1_31 (W44, W44_sigma1_out);
+	sigma1 sig1_32 (W45, W45_sigma1_out);
+	sigma1 sig1_33 (W46, W46_sigma1_out);
+	sigma1 sig1_34 (W47, W47_sigma1_out);
+	sigma1 sig1_35 (W48, W48_sigma1_out);
+	sigma1 sig1_36 (W49, W49_sigma1_out);
+	sigma1 sig1_37 (W50, W50_sigma1_out);
+	sigma1 sig1_38 (W51, W51_sigma1_out);
+	sigma1 sig1_39 (W52, W52_sigma1_out);
+	sigma1 sig1_40 (W53, W53_sigma1_out);
+	sigma1 sig1_41 (W54, W54_sigma1_out);
+	sigma1 sig1_42 (W55, W55_sigma1_out);
+	sigma1 sig1_43 (W56, W56_sigma1_out);
+	sigma1 sig1_44 (W57, W57_sigma1_out);
+	sigma1 sig1_45 (W58, W58_sigma1_out);
+	sigma1 sig1_46 (W59, W59_sigma1_out);
+	sigma1 sig1_47 (W60, W60_sigma1_out);
+	sigma1 sig1_48 (W61, W61_sigma1_out);
+
+
+
+
+   // sigma 0 (see bottom of page 6)
+	sigma0 sig0_1 (W1, W1_sigma0_out);
+	sigma0 sig0_2 (W2, W2_sigma0_out);
+	sigma0 sig0_3 (W3, W3_sigma0_out);
+	sigma0 sig0_4 (W4, W4_sigma0_out);
+	sigma0 sig0_5 (W5, W5_sigma0_out);
+	sigma0 sig0_6 (W6, W6_sigma0_out);
+	sigma0 sig0_7 (W7, W7_sigma0_out);
+	sigma0 sig0_8 (W8, W8_sigma0_out);
+	sigma0 sig0_9 (W9, W9_sigma0_out);
+	sigma0 sig0_10 (W10, W10_sigma0_out);
+	sigma0 sig0_11 (W11, W11_sigma0_out);
+	sigma0 sig0_12 (W12, W12_sigma0_out);
+	sigma0 sig0_13 (W13, W13_sigma0_out);
+	sigma0 sig0_14 (W14, W14_sigma0_out);
+	sigma0 sig0_15 (W15, W15_sigma0_out);
+	sigma0 sig0_16 (W16, W16_sigma0_out);
+	sigma0 sig0_17 (W17, W17_sigma0_out);
+	sigma0 sig0_18 (W18, W18_sigma0_out);
+	sigma0 sig0_19 (W19, W19_sigma0_out);
+	sigma0 sig0_20 (W20, W20_sigma0_out);
+	sigma0 sig0_21 (W21, W21_sigma0_out);
+	sigma0 sig0_22 (W22, W22_sigma0_out);
+	sigma0 sig0_23 (W23, W23_sigma0_out);
+	sigma0 sig0_24 (W24, W24_sigma0_out);
+	sigma0 sig0_25 (W25, W25_sigma0_out);
+	sigma0 sig0_26 (W26, W26_sigma0_out);
+	sigma0 sig0_27 (W27, W27_sigma0_out);
+	sigma0 sig0_28 (W28, W28_sigma0_out);
+	sigma0 sig0_29 (W29, W29_sigma0_out);
+	sigma0 sig0_30 (W30, W30_sigma0_out);
+	sigma0 sig0_31 (W31, W31_sigma0_out);
+	sigma0 sig0_32 (W32, W32_sigma0_out);
+	sigma0 sig0_33 (W33, W33_sigma0_out);
+	sigma0 sig0_34 (W34, W34_sigma0_out);
+	sigma0 sig0_35 (W35, W35_sigma0_out);
+	sigma0 sig0_36 (W36, W36_sigma0_out);
+	sigma0 sig0_37 (W37, W37_sigma0_out);
+	sigma0 sig0_38 (W38, W38_sigma0_out);
+	sigma0 sig0_39 (W39, W39_sigma0_out);
+	sigma0 sig0_40 (W40, W40_sigma0_out);
+	sigma0 sig0_41 (W41, W41_sigma0_out);
+	sigma0 sig0_42 (W42, W42_sigma0_out);
+	sigma0 sig0_43 (W43, W43_sigma0_out);
+	sigma0 sig0_44 (W44, W44_sigma0_out);
+	sigma0 sig0_45 (W45, W45_sigma0_out);
+	sigma0 sig0_46 (W46, W46_sigma0_out);
+	sigma0 sig0_47 (W47, W47_sigma0_out);
+	sigma0 sig0_48 (W48, W48_sigma0_out);
+
+   // fill in other sigma0 blocks
+
+   // Equation for W_i (top of page 7)
+	assign W16 = W14_sigma1_out + W9 + W1_sigma0_out + W0;
+	assign W17 = W15_sigma1_out + W10 + W2_sigma0_out + W1;
+	assign W18 = W16_sigma1_out + W11 + W3_sigma0_out + W2;
+	assign W19 = W17_sigma1_out + W12 + W4_sigma0_out + W3;
+	assign W20 = W18_sigma1_out + W13 + W5_sigma0_out + W4;
+	assign W21 = W19_sigma1_out + W14 + W6_sigma0_out + W5;
+	assign W22 = W20_sigma1_out + W15 + W7_sigma0_out + W6;
+	assign W23 = W21_sigma1_out + W16 + W8_sigma0_out + W7;
+	assign W24 = W22_sigma1_out + W17 + W9_sigma0_out + W8;
+	assign W25 = W23_sigma1_out + W18 + W10_sigma0_out + W9;
+	assign W26 = W24_sigma1_out + W19 + W11_sigma0_out + W10;
+	assign W27 = W25_sigma1_out + W20 + W12_sigma0_out + W11;
+	assign W28 = W26_sigma1_out + W21 + W13_sigma0_out + W12;
+	assign W29 = W27_sigma1_out + W22 + W14_sigma0_out + W13;
+	assign W30 = W28_sigma1_out + W23 + W15_sigma0_out + W14;
+	assign W31 = W29_sigma1_out + W24 + W16_sigma0_out + W15;
+	assign W32 = W30_sigma1_out + W25 + W17_sigma0_out + W16;
+	assign W33 = W31_sigma1_out + W26 + W18_sigma0_out + W17;
+	assign W34 = W32_sigma1_out + W27 + W19_sigma0_out + W18;
+	assign W35 = W33_sigma1_out + W28 + W20_sigma0_out + W19;
+	assign W36 = W34_sigma1_out + W29 + W21_sigma0_out + W20;
+	assign W37 = W35_sigma1_out + W30 + W22_sigma0_out + W21;
+	assign W38 = W36_sigma1_out + W31 + W23_sigma0_out + W22;
+	assign W39 = W37_sigma1_out + W32 + W24_sigma0_out + W23;
+	assign W40 = W38_sigma1_out + W33 + W25_sigma0_out + W24;
+	assign W41 = W39_sigma1_out + W34 + W26_sigma0_out + W25;
+	assign W42 = W40_sigma1_out + W35 + W27_sigma0_out + W26;
+	assign W43 = W41_sigma1_out + W36 + W28_sigma0_out + W27;
+	assign W44 = W42_sigma1_out + W37 + W29_sigma0_out + W28;
+	assign W45 = W43_sigma1_out + W38 + W30_sigma0_out + W29;
+	assign W46 = W44_sigma1_out + W39 + W31_sigma0_out + W30;
+	assign W47 = W45_sigma1_out + W40 + W32_sigma0_out + W31;
+	assign W48 = W46_sigma1_out + W41 + W33_sigma0_out + W32;
+	assign W49 = W47_sigma1_out + W42 + W34_sigma0_out + W33;
+	assign W50 = W48_sigma1_out + W43 + W35_sigma0_out + W34;
+	assign W51 = W49_sigma1_out + W44 + W36_sigma0_out + W35;
+	assign W52 = W50_sigma1_out + W45 + W37_sigma0_out + W36;
+	assign W53 = W51_sigma1_out + W46 + W38_sigma0_out + W37;
+	assign W54 = W52_sigma1_out + W47 + W39_sigma0_out + W38;
+	assign W55 = W53_sigma1_out + W48 + W40_sigma0_out + W39;
+	assign W56 = W54_sigma1_out + W49 + W41_sigma0_out + W40;
+	assign W57 = W55_sigma1_out + W50 + W42_sigma0_out + W41;
+	assign W58 = W56_sigma1_out + W51 + W43_sigma0_out + W42;
+	assign W59 = W57_sigma1_out + W52 + W44_sigma0_out + W43;
+	assign W60 = W58_sigma1_out + W53 + W45_sigma0_out + W44;
+	assign W61 = W59_sigma1_out + W54 + W46_sigma0_out + W45;
+	assign W62 = W60_sigma1_out + W55 + W47_sigma0_out + W46;
+	assign W63 = W61_sigma1_out + W56 + W48_sigma0_out + W47;
+
 	
 endmodule // prepare
 
@@ -412,20 +592,20 @@ module Sigma0 (input logic [31:0] x, output logic [31:0] Sig0);
 
 endmodule // Sigma0
 
-function sigma0 (input logic [31:0] x);
+module sigma0 (input logic [31:0] x, output logic [31:0] sigma0);
 	assign sigma0 = ({x[6:0],x[31:7]}) ^ ({x[17:0], x[31:18]}) ^ (x>>3);
 
-endfunction // sigma0
+endmodule // sigma0
 
 module Sigma1 (input logic [31:0] x, output logic [31:0] Sig1);
 	assign Sig1 = ({x[5:0],x[31:6]}) ^ ({x[10:0], x[31:11]}) ^ ({x[19:0], x[31:20]});
 
 endmodule // Sigma1
 
-function sigma1 (input logic [31:0] x);
+module sigma1 (input logic [31:0] x, output logic [31:0] sigma1);
 	assign sigma1 = ({x[16:0],x[31:17]}) ^ ({x[18:0], x[31:19]}) ^ (x>>10);
 
-endfunction // sigma1
+endmodule// sigma1
 
      
    
