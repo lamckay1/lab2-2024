@@ -18,9 +18,9 @@ module sha_padder #(parameter MSG_SIZE=120,
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
-	localparam zero_width = PADDED_SIZE - MSG_SIZE - 64;
+	localparam zero_width = PADDED_SIZE - MSG_SIZE - 65;
 	
-	assign padded = {message, 1'b1, {zero_width{1'b0}}, MSG_SIZE};
+	assign padded = {message, 1'b1, {zero_width{1'b0}}, {backwidth{1`b0}},MSG_SIZE};
 	//might be wrong
 
 endmodule // sha_padder
