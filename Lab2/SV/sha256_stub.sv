@@ -2,7 +2,7 @@
 // Secure Hash Standard (SHA-256)
 //
 
-module top #(parameter MSG_SIZE=120,
+module top #(parameter MSG_SIZE=24,
 	     parameter PADDED_SIZE = 512)
    (input logic [MSG_SIZE-1:0] message,
     output logic [255:0] hashed);
@@ -14,14 +14,15 @@ module top #(parameter MSG_SIZE=120,
 		
 endmodule // sha_256
 
-module sha_padder #(parameter MSG_SIZE=120,	     
+module sha_padder #(parameter MSG_SIZE=24,	     
 		    parameter PADDED_SIZE = 512) 
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
-	localparam zero_width = PADDED_SIZE - MSG_SIZE - 65;
-	
-	assign padded = {message, 1'b1, {zero_width{1'b0}}, MSG_SIZE};
-	//might be wrong
+	localparam zero_width = PADDED_SIZE - MSG_SIZE - 64 - 1;
+	localparam backwidth = 64 - MSG_SIZE;
+
+	assign padded = {message, 1'b1, {zero_width{1'b0}}, {backwidth{1'b0}}, MSG_SIZE};
+	//Is wrong most likely
 
 endmodule // sha_padder
 
