@@ -9,7 +9,7 @@ module stimulus;
    logic 	 clk;
    logic [31:0]  errors;
    logic [31:0]  vectornum;
-	logic [255:0]  result;
+   logic [255:0]  result;
    // Size of [351:0] is size of vector in file: 96 + 256 = 352 bits
    logic [351:0] testvectors[511:0];
    
@@ -42,7 +42,7 @@ module stimulus;
 	// Add message here : "Hello, SHA-256!"	
 	      #1 message = 24'h616263;
 	// Expected result 
-        #0 result = 256'hba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad;	
+        #0 result = 256'h78a30be97918f2895825904585c04db79881ded24f8629c0c728e805e8577aa7;	
      end  
 
    // check results on falling edge of clk
@@ -50,7 +50,7 @@ module stimulus;
      begin
 	if (result != hashed)
           errors = errors + 1;
-        $fdisplay(desc3, "%h %h || %h || %b", 
+        $fdisplay(desc3, "message: %h\nhashed: %h\nresult: %h\nmatching: %b", 
                   message, hashed, result, (result == hashed));
 	vectornum = vectornum + 1;
 	if (testvectors[vectornum] === 352'bx) 
