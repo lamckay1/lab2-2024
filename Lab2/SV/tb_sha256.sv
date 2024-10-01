@@ -9,7 +9,7 @@ module stimulus;
    logic 	 clk;
    logic [31:0]  errors;
    logic [31:0]  vectornum;
-   logic [63:0]  result;
+	logic [255:0]  result;
    // Size of [351:0] is size of vector in file: 96 + 256 = 352 bits
    logic [351:0] testvectors[511:0];
    
