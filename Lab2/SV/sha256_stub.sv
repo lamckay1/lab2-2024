@@ -544,8 +544,8 @@ module main_comp (input logic [31:0] a_in, b_in, c_in, d_in, e_in, f_in, g_in, h
 	Sigma0 S0(a_in, s0);
 	majority Maj(a_in, b_in, c_in, maj);
 
-	assign T1 = h_in + s1 + cho + K_in + W_in;
-	assign T2 = s0 + maj;
+	assign T1 = h_in[31:0] + s1[31:0] + cho[31:0] + K_in[31:0] + W_in[31:0];
+	assign T2 = s0[31:0] + maj[31:0];
 
 	assign a_out = T1 + T2;
 	assign b_out = a_in;
