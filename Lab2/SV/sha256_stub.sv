@@ -14,16 +14,15 @@ module top #(parameter MSG_SIZE=24,
 		
 endmodule // sha_256
 
-module sha_padder #(parameter MSG_SIZE=24,	     
-		    parameter PADDED_SIZE = 512) 
+module sha_padder #(parameter MSG_SIZE = 24,
+                    parameter PADDED_SIZE = 512)
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
-	localparam zero_width = PADDED_SIZE - MSG_SIZE - 64 - 1;
+
+   localparam zero_width = PADDED_SIZE - 64 - 1;
 	localparam backwidth = 64 - MSG_SIZE;
 
 	assign padded = {message, 1'b1, {zero_width{1'b0}}, {backwidth{1'b0}}, MSG_SIZE};
-	//Is wrong most likely
-
 endmodule // sha_padder
 
 module sha256 #(parameter PADDED_SIZE = 512)
@@ -52,7 +51,7 @@ module sha256 #(parameter PADDED_SIZE = 512)
 		       32'h8cc70208, 32'h90befffa, 32'ha4506ceb, 32'hbef9a3f7,
 		       32'hc67178f2};
 
-   // Definie your intermediate variables here (forgetting them assumes variables are 1-bit)
+   // Define your intermediate variables here (forgetting them assumes variables are 1-bit)
    logic [31:0]   a, b, c, d, e, f, g, h;
 	logic [31:0]   an, bn, cn, dn, en, fn, gn, hn;
 	logic [31:0]   an2, bn2, cn2, dn2, en2, fn2, gn2, hn2;
@@ -118,8 +117,6 @@ logic [31:0]   an61, bn61, cn61, dn61, en61, fn61, gn61, hn61;
 logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
 	logic [31:0]   an63, bn63, cn63, dn63, en63, fn63, gn63, hn63;
 	logic [31:0]   an64, bn64, cn64, dn64, en64, fn64, gn64, hn64;
-	
-   logic [31:0]   h0, h1, h2, h3, h4, h5, h6, h7;
    logic [31:0]   h0o, h1o, h2o, h3o, h4o, h5o, h6o, h7o;
 
    // Initialize a through h
@@ -146,88 +143,86 @@ logic [31:0]   an62, bn62, cn62, dn62, en62, fn62, gn62, hn62;
 		W55, W56, W57, W58, W59,
 		W60, W61, W62, W63;
 	
-prepare p1(padded[31:0], padded[63:32], padded[95:64], padded[127:96], padded[159:128],
-		padded[191:160], padded[223:192], padded[255:224], padded[287:256], padded[319:288], 
-	padded[351:320], padded[383:352], padded[415:384], padded[447:416], padded[479:448], padded[511:480], W0, W1, W2, W3, W4, 
-	W5, W6, W7, W8, W9,
-		W10, W11, W12, W13, W14, 
-		W15, W16, W17, W18, W19,
-		W20, W21, W22, W23, W24, 
-		W25, W26, W27, W28, W29,
-		W30, W31, W32, W33, W34, 
-		W35, W36, W37, W38, W39,
-		W40, W41, W42, W43, W44, 
-		W45, W46, W47, W48, W49,
-		W50, W51, W52, W53, W54, 
-		W55, W56, W57, W58, W59,
-		W60, W61, W62, W63);
+prepare p1 (padded[511:480], padded[479:448], padded[447:416],
+               padded[415:384], padded[383:352], padded[351:320],
+               padded[319:288], padded[287:256], padded[255:224],
+               padded[223:192], padded[191:160], padded[159:128],
+               padded[127:96], padded[95:64], padded[63:32],
+               padded[31:0], W0, W1, W2, W3, W4, W5, W6, W7, W8, W9,
+               W10, W11, W12, W13, W14, W15, W16, W17, W18, W19,
+               W20, W21, W22, W23, W24, W25, W26, W27, W28, W29,
+               W30, W31, W32, W33, W34, W35, W36, W37, W38, W39,
+               W40, W41, W42, W43, W44, W45, W46, W47, W48, W49,
+               W50, W51, W52, W53, W54, W55, W56, W57, W58, W59,
+               W60, W61, W62, W63);
 	
    // 64 hash computations   
 	
-	main_comp mc01 (a, b, c, d, e, f, g, h, K[31:0], W0, an, bn, cn, dn, en, fn, gn, hn); // add arguments within parenthesis
-	main_comp mc02 (an, bn, cn, dn, en, fn, gn, hn, K[63:32], W1, an2, bn2, cn2, dn2, en2, fn2, gn2, hn2); // add arguments within parenthesis
-	main_comp mc03 (an2, bn2, cn2, dn2, en2, fn2, gn2, hn2, K[95:64], W2, an3, bn3, cn3, dn3, en3, fn3, gn3, hn3  ); // add arguments within parenthesis
-  main_comp mc04 (an3, bn3, cn3, dn3, en3, fn3, gn3, hn3, K[127:96], W3, an4, bn4, cn4, dn4, en4, fn4, gn4, hn4);
-main_comp mc05 (an4, bn4, cn4, dn4, en4, fn4, gn4, hn4, K[159:128], W4, an5, bn5, cn5, dn5, en5, fn5, gn5, hn5);
-main_comp mc06 (an5, bn5, cn5, dn5, en5, fn5, gn5, hn5, K[191:160], W5, an6, bn6, cn6, dn6, en6, fn6, gn6, hn6);
-main_comp mc07 (an6, bn6, cn6, dn6, en6, fn6, gn6, hn6, K[223:192], W6, an7, bn7, cn7, dn7, en7, fn7, gn7, hn7);
-main_comp mc08 (an7, bn7, cn7, dn7, en7, fn7, gn7, hn7, K[255:224], W7, an8, bn8, cn8, dn8, en8, fn8, gn8, hn8);
-main_comp mc09 (an8, bn8, cn8, dn8, en8, fn8, gn8, hn8, K[287:256], W8, an9, bn9, cn9, dn9, en9, fn9, gn9, hn9);
-main_comp mc10 (an9, bn9, cn9, dn9, en9, fn9, gn9, hn9, K[319:288], W9, an10, bn10, cn10, dn10, en10, fn10, gn10, hn10);
-main_comp mc11 (an10, bn10, cn10, dn10, en10, fn10, gn10, hn10, K[351:320], W10, an11, bn11, cn11, dn11, en11, fn11, gn11, hn11);
-main_comp mc12 (an11, bn11, cn11, dn11, en11, fn11, gn11, hn11, K[383:352], W11, an12, bn12, cn12, dn12, en12, fn12, gn12, hn12);
-main_comp mc13 (an12, bn12, cn12, dn12, en12, fn12, gn12, hn12, K[415:384], W12, an13, bn13, cn13, dn13, en13, fn13, gn13, hn13);
-main_comp mc14 (an13, bn13, cn13, dn13, en13, fn13, gn13, hn13, K[447:416], W13, an14, bn14, cn14, dn14, en14, fn14, gn14, hn14);
-main_comp mc15 (an14, bn14, cn14, dn14, en14, fn14, gn14, hn14, K[479:448], W14, an15, bn15, cn15, dn15, en15, fn15, gn15, hn15);
-main_comp mc16 (an15, bn15, cn15, dn15, en15, fn15, gn15, hn15, K[511:480], W15, an16, bn16, cn16, dn16, en16, fn16, gn16, hn16);
-main_comp mc17 (an16, bn16, cn16, dn16, en16, fn16, gn16, hn16, K[543:512], W16, an17, bn17, cn17, dn17, en17, fn17, gn17, hn17);
-main_comp mc18 (an17, bn17, cn17, dn17, en17, fn17, gn17, hn17, K[575:544], W17, an18, bn18, cn18, dn18, en18, fn18, gn18, hn18);
-main_comp mc19 (an18, bn18, cn18, dn18, en18, fn18, gn18, hn18, K[607:576], W18, an19, bn19, cn19, dn19, en19, fn19, gn19, hn19);
-main_comp mc20 (an19, bn19, cn19, dn19, en19, fn19, gn19, hn19, K[639:608], W19, an20, bn20, cn20, dn20, en20, fn20, gn20, hn20);
-main_comp mc21 (an20, bn20, cn20, dn20, en20, fn20, gn20, hn20, K[671:640], W20, an21, bn21, cn21, dn21, en21, fn21, gn21, hn21);
-main_comp mc22 (an21, bn21, cn21, dn21, en21, fn21, gn21, hn21, K[703:672], W21, an22, bn22, cn22, dn22, en22, fn22, gn22, hn22);
-main_comp mc23 (an22, bn22, cn22, dn22, en22, fn22, gn22, hn22, K[735:704], W22, an23, bn23, cn23, dn23, en23, fn23, gn23, hn23);
-main_comp mc24 (an23, bn23, cn23, dn23, en23, fn23, gn23, hn23, K[767:736], W23, an24, bn24, cn24, dn24, en24, fn24, gn24, hn24);
-main_comp mc25 (an24, bn24, cn24, dn24, en24, fn24, gn24, hn24, K[799:768], W24, an25, bn25, cn25, dn25, en25, fn25, gn25, hn25);
-main_comp mc26 (an25, bn25, cn25, dn25, en25, fn25, gn25, hn25, K[831:800], W25, an26, bn26, cn26, dn26, en26, fn26, gn26, hn26);
-main_comp mc27 (an26, bn26, cn26, dn26, en26, fn26, gn26, hn26, K[863:832], W26, an27, bn27, cn27, dn27, en27, fn27, gn27, hn27);
-main_comp mc28 (an27, bn27, cn27, dn27, en27, fn27, gn27, hn27, K[895:864], W27, an28, bn28, cn28, dn28, en28, fn28, gn28, hn28);
-main_comp mc29 (an28, bn28, cn28, dn28, en28, fn28, gn28, hn28, K[927:896], W28, an29, bn29, cn29, dn29, en29, fn29, gn29, hn29);
-main_comp mc30 (an29, bn29, cn29, dn29, en29, fn29, gn29, hn29, K[959:928], W29, an30, bn30, cn30, dn30, en30, fn30, gn30, hn30);
-main_comp mc31 (an30, bn30, cn30, dn30, en30, fn30, gn30, hn30, K[991:960], W30, an31, bn31, cn31, dn31, en31, fn31, gn31, hn31);
-main_comp mc32 (an31, bn31, cn31, dn31, en31, fn31, gn31, hn31, K[1023:992], W31, an32, bn32, cn32, dn32, en32, fn32, gn32, hn32);
-main_comp mc33 (an32, bn32, cn32, dn32, en32, fn32, gn32, hn32, K[1055:1024], W32, an33, bn33, cn33, dn33, en33, fn33, gn33, hn33);
-main_comp mc34 (an33, bn33, cn33, dn33, en33, fn33, gn33, hn33, K[1087:1056], W33, an34, bn34, cn34, dn34, en34, fn34, gn34, hn34);
-main_comp mc35 (an34, bn34, cn34, dn34, en34, fn34, gn34, hn34, K[1119:1088], W34, an35, bn35, cn35, dn35, en35, fn35, gn35, hn35);
-main_comp mc36 (an35, bn35, cn35, dn35, en35, fn35, gn35, hn35, K[1151:1120], W35, an36, bn36, cn36, dn36, en36, fn36, gn36, hn36);
-main_comp mc37 (an36, bn36, cn36, dn36, en36, fn36, gn36, hn36, K[1183:1152], W36, an37, bn37, cn37, dn37, en37, fn37, gn37, hn37);
-main_comp mc38 (an37, bn37, cn37, dn37, en37, fn37, gn37, hn37, K[1215:1184], W37, an38, bn38, cn38, dn38, en38, fn38, gn38, hn38);
-main_comp mc39 (an38, bn38, cn38, dn38, en38, fn38, gn38, hn38, K[1247:1216], W38, an39, bn39, cn39, dn39, en39, fn39, gn39, hn39);
-main_comp mc40 (an39, bn39, cn39, dn39, en39, fn39, gn39, hn39, K[1279:1248], W39, an40, bn40, cn40, dn40, en40, fn40, gn40, hn40);
-main_comp mc41 (an40, bn40, cn40, dn40, en40, fn40, gn40, hn40, K[1311:1280], W40, an41, bn41, cn41, dn41, en41, fn41, gn41, hn41);
-main_comp mc42 (an41, bn41, cn41, dn41, en41, fn41, gn41, hn41, K[1343:1312], W41, an42, bn42, cn42, dn42, en42, fn42, gn42, hn42);
-main_comp mc43 (an42, bn42, cn42, dn42, en42, fn42, gn42, hn42, K[1375:1344], W42, an43, bn43, cn43, dn43, en43, fn43, gn43, hn43);
-main_comp mc44 (an43, bn43, cn43, dn43, en43, fn43, gn43, hn43, K[1407:1376], W43, an44, bn44, cn44, dn44, en44, fn44, gn44, hn44);
-main_comp mc45 (an44, bn44, cn44, dn44, en44, fn44, gn44, hn44, K[1439:1408], W44, an45, bn45, cn45, dn45, en45, fn45, gn45, hn45);
-main_comp mc46 (an45, bn45, cn45, dn45, en45, fn45, gn45, hn45, K[1471:1440], W45, an46, bn46, cn46, dn46, en46, fn46, gn46, hn46);
-main_comp mc47 (an46, bn46, cn46, dn46, en46, fn46, gn46, hn46, K[1503:1472], W46, an47, bn47, cn47, dn47, en47, fn47, gn47, hn47);
-main_comp mc48 (an47, bn47, cn47, dn47, en47, fn47, gn47, hn47, K[1535:1504], W47, an48, bn48, cn48, dn48, en48, fn48, gn48, hn48);
-main_comp mc49 (an48, bn48, cn48, dn48, en48, fn48, gn48, hn48, K[1567:1536], W48, an49, bn49, cn49, dn49, en49, fn49, gn49, hn49);
-main_comp mc50 (an49, bn49, cn49, dn49, en49, fn49, gn49, hn49, K[1599:1568], W49, an50, bn50, cn50, dn50, en50, fn50, gn50, hn50);
-main_comp mc51 (an50, bn50, cn50, dn50, en50, fn50, gn50, hn50, K[1631:1600], W50, an51, bn51, cn51, dn51, en51, fn51, gn51, hn51);
-main_comp mc52 (an51, bn51, cn51, dn51, en51, fn51, gn51, hn51, K[1663:1632], W51, an52, bn52, cn52, dn52, en52, fn52, gn52, hn52);
-main_comp mc53 (an52, bn52, cn52, dn52, en52, fn52, gn52, hn52, K[1695:1664], W52, an53, bn53, cn53, dn53, en53, fn53, gn53, hn53);
-main_comp mc54 (an53, bn53, cn53, dn53, en53, fn53, gn53, hn53, K[1727:1696], W53, an54, bn54, cn54, dn54, en54, fn54, gn54, hn54);
-main_comp mc55 (an54, bn54, cn54, dn54, en54, fn54, gn54, hn54, K[1759:1728], W54, an55, bn55, cn55, dn55, en55, fn55, gn55, hn55);
-main_comp mc56 (an55, bn55, cn55, dn55, en55, fn55, gn55, hn55, K[1791:1760], W55, an56, bn56, cn56, dn56, en56, fn56, gn56, hn56);
-main_comp mc57 (an56, bn56, cn56, dn56, en56, fn56, gn56, hn56, K[1823:1792], W56, an57, bn57, cn57, dn57, en57, fn57, gn57, hn57);
-main_comp mc58 (an57, bn57, cn57, dn57, en57, fn57, gn57, hn57, K[1855:1824], W57, an58, bn58, cn58, dn58, en58, fn58, gn58, hn58);
-main_comp mc59 (an58, bn58, cn58, dn58, en58, fn58, gn58, hn58, K[1887:1856], W58, an59, bn59, cn59, dn59, en59, fn59, gn59, hn59);
-main_comp mc60 (an59, bn59, cn59, dn59, en59, fn59, gn59, hn59, K[1919:1888], W59, an60, bn60, cn60, dn60, en60, fn60, gn60, hn60);
-main_comp mc61 (an60, bn60, cn60, dn60, en60, fn60, gn60, hn60, K[1951:1920], W60, an61, bn61, cn61, dn61, en61, fn61, gn61, hn61);
-main_comp mc62 (an61, bn61, cn61, dn61, en61, fn61, gn61, hn61, K[1983:1952], W61, an62, bn62, cn62, dn62, en62, fn62, gn62, hn62);
-main_comp mc63 (an62, bn62, cn62, dn62, en62, fn62, gn62, hn62, K[2015:1984], W62, an63, bn63, cn63, dn63, en63, fn63, gn63, hn63);
-main_comp mc64 (an63, bn63, cn63, dn63, en63, fn63, gn63, hn63, K[2047:2016], W63, an64, bn64, cn64, dn64, en64, fn64, gn64, hn64);
+	main_comp mc01 (a, b, c, d, e, f, g, h, K[2047:2016], W0, an, bn, cn, dn, en, fn, gn, hn); 
+main_comp mc02 (an, bn, cn, dn, en, fn, gn, hn, K[2015:1984], W1, an2, bn2, cn2, dn2, en2, fn2, gn2, hn2); 
+main_comp mc03 (an2, bn2, cn2, dn2, en2, fn2, gn2, hn2, K[1983:1952], W2, an3, bn3, cn3, dn3, en3, fn3, gn3, hn3); 
+main_comp mc04 (an3, bn3, cn3, dn3, en3, fn3, gn3, hn3, K[1951:1920], W3, an4, bn4, cn4, dn4, en4, fn4, gn4, hn4); 
+main_comp mc05 (an4, bn4, cn4, dn4, en4, fn4, gn4, hn4, K[1919:1888], W4, an5, bn5, cn5, dn5, en5, fn5, gn5, hn5); 
+main_comp mc06 (an5, bn5, cn5, dn5, en5, fn5, gn5, hn5, K[1887:1856], W5, an6, bn6, cn6, dn6, en6, fn6, gn6, hn6); 
+main_comp mc07 (an6, bn6, cn6, dn6, en6, fn6, gn6, hn6, K[1855:1824], W6, an7, bn7, cn7, dn7, en7, fn7, gn7, hn7); 
+main_comp mc08 (an7, bn7, cn7, dn7, en7, fn7, gn7, hn7, K[1823:1792], W7, an8, bn8, cn8, dn8, en8, fn8, gn8, hn8); 
+main_comp mc09 (an8, bn8, cn8, dn8, en8, fn8, gn8, hn8, K[1791:1760], W8, an9, bn9, cn9, dn9, en9, fn9, gn9, hn9); 
+main_comp mc10 (an9, bn9, cn9, dn9, en9, fn9, gn9, hn9, K[1759:1728], W9, an10, bn10, cn10, dn10, en10, fn10, gn10, hn10); 
+main_comp mc11 (an10, bn10, cn10, dn10, en10, fn10, gn10, hn10, K[1727:1696], W10, an11, bn11, cn11, dn11, en11, fn11, gn11, hn11); 
+main_comp mc12 (an11, bn11, cn11, dn11, en11, fn11, gn11, hn11, K[1695:1664], W11, an12, bn12, cn12, dn12, en12, fn12, gn12, hn12); 
+main_comp mc13 (an12, bn12, cn12, dn12, en12, fn12, gn12, hn12, K[1663:1632], W12, an13, bn13, cn13, dn13, en13, fn13, gn13, hn13); 
+main_comp mc14 (an13, bn13, cn13, dn13, en13, fn13, gn13, hn13, K[1631:1600], W13, an14, bn14, cn14, dn14, en14, fn14, gn14, hn14); 
+main_comp mc15 (an14, bn14, cn14, dn14, en14, fn14, gn14, hn14, K[1599:1568], W14, an15, bn15, cn15, dn15, en15, fn15, gn15, hn15); 
+main_comp mc16 (an15, bn15, cn15, dn15, en15, fn15, gn15, hn15, K[1567:1536], W15, an16, bn16, cn16, dn16, en16, fn16, gn16, hn16); 
+main_comp mc17 (an16, bn16, cn16, dn16, en16, fn16, gn16, hn16, K[1535:1504], W16, an17, bn17, cn17, dn17, en17, fn17, gn17, hn17); 
+main_comp mc18 (an17, bn17, cn17, dn17, en17, fn17, gn17, hn17, K[1503:1472], W17, an18, bn18, cn18, dn18, en18, fn18, gn18, hn18); 
+main_comp mc19 (an18, bn18, cn18, dn18, en18, fn18, gn18, hn18, K[1471:1440], W18, an19, bn19, cn19, dn19, en19, fn19, gn19, hn19); 
+main_comp mc20 (an19, bn19, cn19, dn19, en19, fn19, gn19, hn19, K[1439:1408], W19, an20, bn20, cn20, dn20, en20, fn20, gn20, hn20); 
+main_comp mc21 (an20, bn20, cn20, dn20, en20, fn20, gn20, hn20, K[1407:1376], W20, an21, bn21, cn21, dn21, en21, fn21, gn21, hn21); 
+main_comp mc22 (an21, bn21, cn21, dn21, en21, fn21, gn21, hn21, K[1375:1344], W21, an22, bn22, cn22, dn22, en22, fn22, gn22, hn22); 
+main_comp mc23 (an22, bn22, cn22, dn22, en22, fn22, gn22, hn22, K[1343:1312], W22, an23, bn23, cn23, dn23, en23, fn23, gn23, hn23); 
+main_comp mc24 (an23, bn23, cn23, dn23, en23, fn23, gn23, hn23, K[1311:1280], W23, an24, bn24, cn24, dn24, en24, fn24, gn24, hn24); 
+main_comp mc25 (an24, bn24, cn24, dn24, en24, fn24, gn24, hn24, K[1279:1248], W24, an25, bn25, cn25, dn25, en25, fn25, gn25, hn25); 
+main_comp mc26 (an25, bn25, cn25, dn25, en25, fn25, gn25, hn25, K[1247:1216], W25, an26, bn26, cn26, dn26, en26, fn26, gn26, hn26); 
+main_comp mc27 (an26, bn26, cn26, dn26, en26, fn26, gn26, hn26, K[1215:1184], W26, an27, bn27, cn27, dn27, en27, fn27, gn27, hn27); 
+main_comp mc28 (an27, bn27, cn27, dn27, en27, fn27, gn27, hn27, K[1183:1152], W27, an28, bn28, cn28, dn28, en28, fn28, gn28, hn28); 
+main_comp mc29 (an28, bn28, cn28, dn28, en28, fn28, gn28, hn28, K[1151:1120], W28, an29, bn29, cn29, dn29, en29, fn29, gn29, hn29); 
+main_comp mc30 (an29, bn29, cn29, dn29, en29, fn29, gn29, hn29, K[1119:1088], W29, an30, bn30, cn30, dn30, en30, fn30, gn30, hn30); 
+main_comp mc31 (an30, bn30, cn30, dn30, en30, fn30, gn30, hn30, K[1087:1056], W30, an31, bn31, cn31, dn31, en31, fn31, gn31, hn31); 
+main_comp mc32 (an31, bn31, cn31, dn31, en31, fn31, gn31, hn31, K[1055:1024], W31, an32, bn32, cn32, dn32, en32, fn32, gn32, hn32);
+main_comp mc33 (an32, bn32, cn32, dn32, en32, fn32, gn32, hn32, K[1023:992], W32, an33, bn33, cn33, dn33, en33, fn33, gn33, hn33);
+main_comp mc34 (an33, bn33, cn33, dn33, en33, fn33, gn33, hn33, K[991:960], W33, an34, bn34, cn34, dn34, en34, fn34, gn34, hn34); 
+main_comp mc35 (an34, bn34, cn34, dn34, en34, fn34, gn34, hn34, K[959:928], W34, an35, bn35, cn35, dn35, en35, fn35, gn35, hn35); 
+main_comp mc36 (an35, bn35, cn35, dn35, en35, fn35, gn35, hn35, K[927:896], W35, an36, bn36, cn36, dn36, en36, fn36, gn36, hn36); 
+main_comp mc37 (an36, bn36, cn36, dn36, en36, fn36, gn36, hn36, K[895:864], W36, an37, bn37, cn37, dn37, en37, fn37, gn37, hn37); 
+main_comp mc38 (an37, bn37, cn37, dn37, en37, fn37, gn37, hn37, K[863:832], W37, an38, bn38, cn38, dn38, en38, fn38, gn38, hn38); 
+main_comp mc39 (an38, bn38, cn38, dn38, en38, fn38, gn38, hn38, K[831:800], W38, an39, bn39, cn39, dn39, en39, fn39, gn39, hn39); 
+main_comp mc40 (an39, bn39, cn39, dn39, en39, fn39, gn39, hn39, K[799:768], W39, an40, bn40, cn40, dn40, en40, fn40, gn40, hn40); 
+main_comp mc41 (an40, bn40, cn40, dn40, en40, fn40, gn40, hn40, K[767:736], W40, an41, bn41, cn41, dn41, en41, fn41, gn41, hn41); 
+main_comp mc42 (an41, bn41, cn41, dn41, en41, fn41, gn41, hn41, K[735:704], W41, an42, bn42, cn42, dn42, en42, fn42, gn42, hn42); 
+main_comp mc43 (an42, bn42, cn42, dn42, en42, fn42, gn42, hn42, K[703:672], W42, an43, bn43, cn43, dn43, en43, fn43, gn43, hn43); 
+main_comp mc44 (an43, bn43, cn43, dn43, en43, fn43, gn43, hn43, K[671:640], W43, an44, bn44, cn44, dn44, en44, fn44, gn44, hn44); 
+main_comp mc45 (an44, bn44, cn44, dn44, en44, fn44, gn44, hn44, K[639:608], W44, an45, bn45, cn45, dn45, en45, fn45, gn45, hn45); 
+main_comp mc46 (an45, bn45, cn45, dn45, en45, fn45, gn45, hn45, K[607:576], W45, an46, bn46, cn46, dn46, en46, fn46, gn46, hn46); 
+main_comp mc47 (an46, bn46, cn46, dn46, en46, fn46, gn46, hn46, K[575:544], W46, an47, bn47, cn47, dn47, en47, fn47, gn47, hn47); 
+main_comp mc48 (an47, bn47, cn47, dn47, en47, fn47, gn47, hn47, K[543:512], W47, an48, bn48, cn48, dn48, en48, fn48, gn48, hn48); 
+main_comp mc49 (an48, bn48, cn48, dn48, en48, fn48, gn48, hn48, K[511:480], W48, an49, bn49, cn49, dn49, en49, fn49, gn49, hn49); 
+main_comp mc50 (an49, bn49, cn49, dn49, en49, fn49, gn49, hn49, K[479:448], W49, an50, bn50, cn50, dn50, en50, fn50, gn50, hn50); 
+main_comp mc51 (an50, bn50, cn50, dn50, en50, fn50, gn50, hn50, K[447:416], W50, an51, bn51, cn51, dn51, en51, fn51, gn51, hn51); 
+main_comp mc52 (an51, bn51, cn51, dn51, en51, fn51, gn51, hn51, K[415:384], W51, an52, bn52, cn52, dn52, en52, fn52, gn52, hn52); 
+main_comp mc53 (an52, bn52, cn52, dn52, en52, fn52, gn52, hn52, K[383:352], W52, an53, bn53, cn53, dn53, en53, fn53, gn53, hn53); 
+main_comp mc54 (an53, bn53, cn53, dn53, en53, fn53, gn53, hn53, K[351:320], W53, an54, bn54, cn54, dn54, en54, fn54, gn54, hn54); 
+main_comp mc55 (an54, bn54, cn54, dn54, en54, fn54, gn54, hn54, K[319:288], W54, an55, bn55, cn55, dn55, en55, fn55, gn55, hn55); 
+main_comp mc56 (an55, bn55, cn55, dn55, en55, fn55, gn55, hn55, K[287:256], W55, an56, bn56, cn56, dn56, en56, fn56, gn56, hn56); 
+main_comp mc57 (an56, bn56, cn56, dn56, en56, fn56, gn56, hn56, K[255:224], W56, an57, bn57, cn57, dn57, en57, fn57, gn57, hn57); 
+main_comp mc58 (an57, bn57, cn57, dn57, en57, fn57, gn57, hn57, K[223:192], W57, an58, bn58, cn58, dn58, en58, fn58, gn58, hn58); 
+main_comp mc59 (an58, bn58, cn58, dn58, en58, fn58, gn58, hn58, K[191:160], W58, an59, bn59, cn59, dn59, en59, fn59, gn59, hn59); 
+main_comp mc60 (an59, bn59, cn59, dn59, en59, fn59, gn59, hn59, K[159:128], W59, an60, bn60, cn60, dn60, en60, fn60, gn60, hn60); 
+main_comp mc61 (an60, bn60, cn60, dn60, en60, fn60, gn60, hn60, K[127:96], W60, an61, bn61, cn61, dn61, en61, fn61, gn61, hn61); 
+main_comp mc62 (an61, bn61, cn61, dn61, en61, fn61, gn61, hn61, K[95:64], W61, an62, bn62, cn62, dn62, en62, fn62, gn62, hn62); 
+main_comp mc63 (an62, bn62, cn62, dn62, en62, fn62, gn62, hn62, K[63:32], W62, an63, bn63, cn63, dn63, en63, fn63, gn63, hn63); 
+main_comp mc64 (an63, bn63, cn63, dn63, en63, fn63, gn63, hn63, K[31:0], W63, an64, bn64, cn64, dn64, en64, fn64, gn64, hn64);
+
 
 
 
