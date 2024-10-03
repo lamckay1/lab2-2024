@@ -19,10 +19,10 @@ module sha_padder #(parameter MSG_SIZE = 24,
    (input logic [MSG_SIZE-1:0] message,
     output logic [PADDED_SIZE-1:0] padded);
 
-   localparam zero_width = PADDED_SIZE - 64 - 1;
-	localparam backwidth = 64 - MSG_SIZE;
+ //  localparam zero_width = PADDED_SIZE - MSG_SIZE - 64 - 1;
+//	localparam backwidth = 64 - MSG_SIZE;
 
-	assign padded = {message, 1'b1, {zero_width{1'b0}}, {backwidth{1'b0}}, MSG_SIZE};
+	assign padded = {message[23:0], 1'b1, {455{1'b0}}, MSG_SIZE};
 endmodule // sha_padder
 
 module sha256 #(parameter PADDED_SIZE = 512)
@@ -594,7 +594,7 @@ module sigma0 (input logic [31:0] x, output logic [31:0] sigma0);
 endmodule // sigma0
 
 module Sigma1 (input logic [31:0] x, output logic [31:0] Sig1);
-	assign Sig1 = ({x[5:0],x[31:6]}) ^ ({x[10:0], x[31:11]}) ^ ({x[19:0], x[31:20]});
+	assign Sig1 = ({x[5:0],x[31:6]}) ^ ({x[10:0], x[31:11]}) ^ ({x[24:0], x[31:20]});
 
 endmodule // Sigma1
 
