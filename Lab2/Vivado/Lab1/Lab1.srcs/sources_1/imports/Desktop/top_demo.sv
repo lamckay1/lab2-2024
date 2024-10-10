@@ -44,13 +44,29 @@ module top_demo
   logic [16:0] NEXT_COUNT;
   logic        smol_clk;
   
-  // Place TicTacToe instantiation here
+  // Place SHA instantiation here
+  logic [255:0] hashed;
+  logic [MSG_SIZE-1:0] message;
+  localparam MSG_SIZE = 24;
+  localparam PADDED_SIZE = 512;
+  logic [255:0] result;
+  logic [63:0] s;
+  top#( MSG_SIZE, PADDED_SIZE)(.message(24'h616263),.hashed(result));
   
+  alway_comb begin
+        case(sw[1:0])
+        4'b00: s = result[63:0];
+        4'b01: s = result[127:64];
+        4'b10: s = result[191:128];
+        4'b11: s = result[255:192];
+        
+        endcase
+  end
   // 7-segment display
   segment_driver driver(
   .clk(smol_clk),
   .rst(btn[3]),
-  .digit0(sw[3:0]),
+  .digit0(),
   .digit1(4'b0111),
   .digit2(sw[7:4]),
   .digit3(4'b1111),
