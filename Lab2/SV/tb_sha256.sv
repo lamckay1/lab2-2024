@@ -11,7 +11,7 @@ module stimulus;
    logic [31:0]  errors;
    logic [31:0]  vectornum;
    logic [255:0]  result1;
-   // Size of [351:0] is size of vector in file: 96 + 256 = 352 bits
+   // Size of [351:0] is size of vector in file: 24 + 256 = 352 bits
    logic [279:0] testvectors[511:0];
    integer 	 handle3;
    integer 	 desc3;
@@ -19,7 +19,7 @@ module stimulus;
    integer       j;
 
    // Instantiate DUT
-   top #(MSG_SIZE, 512) dut1 (message1, hashed1);
+   top #(MSG_SIZE, 512) dut (message1, hashed1);
    // 1 ns clock
    initial 
      begin	
@@ -41,7 +41,7 @@ module stimulus;
     // apply test vectors on rising edge of clk
    always @(posedge clk)
      begin
-	// Add message here : "abc"	
+	// Add message here	
 	      #1 message1 = testvectors[vectornum][279:256];
 	// Expected result 
         #0 result1 = testvectors[vectornum][255:0];	
@@ -58,12 +58,14 @@ module stimulus;
           errors = errors + 1;
         $fdisplay(desc3, "message: %h\nhashed: %h\nresult: %h\nmatching: %b\n\n", 
                   message1, hashed1, result1, (result1 == hashed1));
-	vectornum = vectornum + 1;
+	
 	if (testvectors[vectornum] === {280{1'bx}}) 
           begin 
              $display("%d tests completed with %d errors", 
                       vectornum, errors);
              $finish;
+          end else begin 
+vectornum = vectornum + 1;
           end
      end   //1
 
