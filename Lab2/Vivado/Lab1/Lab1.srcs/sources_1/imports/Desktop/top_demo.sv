@@ -50,8 +50,8 @@ module top_demo
   localparam MSG_SIZE = 24;
   localparam PADDED_SIZE = 512;
   logic [255:0] result;
-  logic [63:0] s;
-  top#( MSG_SIZE, PADDED_SIZE)(.message(24'h616263),.hashed(result));
+  logic [15:0] s;
+  top #(MSG_SIZE, PADDED_SIZE) (.message(24'h616263),.hashed(result));
   
   alway_comb begin
         case(sw[1:0])
@@ -79,10 +79,12 @@ module top_demo
   segment_driver driver(
   .clk(smol_clk),
   .rst(btn[3]),
-  .digit0(),
-  .digit1(4'b0111),
-  .digit2(sw[7:4]),
-  .digit3(4'b1111),
+  
+    .digit0(s[3:0]),
+    .digit1(s[7:4]),
+    .digit2(s[11:8]),
+    .digit3(s[15:12]),
+    
   .decimals({1'b0, btn[2:0]}),
   .segment_cathodes({sseg_dp, sseg_cg, sseg_cf, sseg_ce, sseg_cd, sseg_cc, sseg_cb, sseg_ca}),
   .digit_anodes(sseg_an)
