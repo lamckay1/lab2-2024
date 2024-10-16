@@ -1,8 +1,8 @@
-module mux(input logic [1:0] sw, input logic [255:0] result, output logic [16:0] s);
+module mux(input logic [1:0] sel, input logic [255:0] result, output logic [16:0] s);
 
 
 alway_comb begin
-        case(sw[1:0])
+        case(sel[1:0])
           4'b0000: s = result[15:0];
           4'b0001: s = result[31:16];
           4'b0010: s = result[47:32];
