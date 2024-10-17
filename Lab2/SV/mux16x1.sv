@@ -1,7 +1,7 @@
-module mux(input logic [3:0] sel, input logic [255:0] result, output logic [16:0] s);
+module mux(input logic [3:0] sel, input logic [255:0] result, output logic [15:0] s);
 
 
-alway_comb begin
+always_comb begin
         case(sel)
           4'b0000: s = result[15:0];
           4'b0001: s = result[31:16];
@@ -22,5 +22,5 @@ alway_comb begin
           
         
         endcase
-  end
+ end
 endmodule
