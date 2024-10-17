@@ -31,7 +31,7 @@ module stimulus;
      begin
 	handle3 = $fopen("sha256.out");
 	vectornum = 0;
-	errors = 0;		
+	errors = 0;
 	desc3 = handle3;
      $readmemh("sha256.tv", testvectors, 0, 4);
      end
@@ -54,7 +54,7 @@ module stimulus;
    // check results on falling edge of clk
    always @(negedge clk)
      begin
-	if (result1 != hashed1)
+	if (result != hashed)
           errors = errors + 1;
         $fdisplay(desc3, "message: %h\nhashed: %h\nresult: %h\nmatching: %b\n\n", 
                   message, hashed, result, (result == hashed));
